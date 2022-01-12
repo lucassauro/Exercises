@@ -27,5 +27,3 @@ ORDER BY SALARY DESC;
 #10
 
 
-
-
