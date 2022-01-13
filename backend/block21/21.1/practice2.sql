@@ -1,9 +1,9 @@
-#1
+-- 1
 SELECT film_id, title, 
 IF(title LIKE 'ACE GOLDFINGER', 'Já assisti a esse filme', 'Não conheço o filme') AS 'conheço o filme?'
 FROM sakila.film;
 
-#2
+-- 2
 SELECT 
 	title, 
   rating,
