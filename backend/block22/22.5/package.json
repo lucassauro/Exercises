@@ -1,0 +1,21 @@
+{
+  "name": "22.5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "practice1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon 4_exercise.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "express-rescue": "^1.1.31",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.15"
+  }
+}
