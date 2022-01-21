@@ -2,13 +2,13 @@ const Joi = require('joi');
 
 const validateCEPParams = (req, res, next) => {
   const { cep } = req.params;
-  if (!cep || !cep.match(/\d{5}-?\d{3}/)) return next({ code: "invalidData", message: 'CEP inválido' })
+  if (!cep || !cep.match(/\d{5}-\d{3}/)) return next({ code: "invalidData", message: 'CEP inválido' })
   next();
 }
 
 const validateCEPBody = (req, res, next) => {
   const { cep } = req.body;
-  if (!cep || !cep.match(/\d{5}-?\d{3}/)) return next({ code: "invalidData", message: 'CEP inválido' })
+  if (!cep || !cep.match(/\d{5}-\d{3}/)) return next({ code: "invalidData", message: 'CEP inválido' })
   next();
 }
 
