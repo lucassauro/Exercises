@@ -13,8 +13,7 @@ const create = async ({ title, directedBy, releaseYear }) => {
 };
 
 const get = async (id) => {
-  const [result] = await connection.execute('SELECT * FROM model_example.movies WHERE id = ?', [id])
-  console.log(result);
+  const [result] = await connection.execute('SELECT * FROM model_example.movies WHERE id = ?', [id]);
   return result;
 }
 

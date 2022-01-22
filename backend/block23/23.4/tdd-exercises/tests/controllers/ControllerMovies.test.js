@@ -1,5 +1,6 @@
 const sinon = require('sinon');
-const { expect } = require('chai');
+const { expect, calledWith } = require('chai');
+const connection = require('../../models/Connection');
 
 const ServiceMovies = require('../../services/ServiceMovies');
 const ControllerMovies = require('../../controllers/ControllerMovies');
@@ -77,3 +78,75 @@ describe('Ao chamar o controller de create', () => {
 
   });
 });
+
+describe('Consulta no banco de dados um id...', () => {
+
+    describe('válido ..', () => {
+      const request = {};
+      const response = {};
+
+      before(() => {
+        request.params = { id: 1 };
+  
+        response.status = sinon.stub()
+          .returns(response);
+        response.send = sinon.stub()
+          .returns();
+      })
+  
+
+      describe('existente', () => {
+        before(async () => {
+          const execute = { id: 1, title: 'Inglorious Basterds', directedBy: 'Quentin Tarantino', releaseYear: 2009 };
+          sinon.stub(ServiceMovies, 'get').resolves(execute);
+        })
+        after(async () => {
+          ServiceMovies.get.restore();
+        })
+
+        it('retorna status 200 ok', async () => {
+          await ControllerMovies.get(request, response)
+          expect(response.status.calledWith(200)).to.be.equal(true);
+        })
+        it('recebe send com detalhes corretos do filme', async () => {
+          await ControllerMovies.get(request, response)
+          expect(response.send.calledWith({ id: 1, title: 'Inglorious Basterds', directedBy: 'Quentin Tarantino', releaseYear: 2009 })).to.be.equal(true); 
+        })
+      })
+
+      describe('inexistente', () => {
+        before(async () => {
+          const execute = { error: { code: 'notFound', message: 'Id não encontrado' } };
+          sinon.stub(ServiceMovies, 'get').resolves(execute);
+        })
+        after(async () => {
+          ServiceMovies.get.restore();
+        })
+        it('retorna status 404 Not Found', async () => {
+          await ControllerMovies.get(request, response)
+          expect(response.status.calledWith(404)).to.be.equal(true)
+        })
+        it('retorna a mensagem de NotFound id não encontrado', async () => {
+          await ControllerMovies.get(request, response)
+          expect(response.send.calledWith('Id não encontrado')).to.be.equal(true);
+        })
+      })
+    })
+
+    describe('inválido', () => {
+      before(async () => {
+        const execute = { error: { code: 'badRequest', message: 'id deve ser número' } };
+        sinon.stub(ServiceMovies, 'get').resolves(execute);
+      })
+      after(async () => {
+        ServiceMovies.get.restore();
+      })
+      it('retorna status 400 bad Request', () => {
+
+      })
+      it('retorna a mensagem de badRequest id deve ser número', () => {
+
+      })
+    })
+
+})

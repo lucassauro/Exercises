@@ -21,6 +21,14 @@ const create = async ({ title, directedBy, releaseYear }) => {
   };
 };
 
+const get = async (id) => {
+  const result = await ModelMovies.get(id)
+  if (typeof id !== 'number') return { error: { code: 'badRequest', message: 'id deve ser número'} }
+  if (!result || result.length < 1) return { error: { code: 'notFound', message: 'Id não encontrado' } }
+  return result;
+}
+
 module.exports = {
   create,
+  get,
 };

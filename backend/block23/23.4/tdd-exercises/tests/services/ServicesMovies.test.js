@@ -55,3 +55,47 @@ describe('Insere um novo filme no BD', () => {
 
   });
 });
+
+describe('Consulta no banco de dados um id', () => {
+
+  describe('existente', () => {
+    const payload = 1;
+    before(async () => {
+      const execute = { id: 1, title: 'Inglorious Basterds', directedBy: 'Quentin Tarantino', releaseYear: 2009 };
+      sinon.stub(ModelMovies, 'get').resolves(execute);
+    })
+    after(async () => {
+      ModelMovies.get.restore();
+    })
+    it('retorna um objeto', async () => {
+      const result = await ServiceMovies.get(payload)
+      expect(result).to.be.an('object');
+    })
+    it('o objeto contém o título do filme consultado', async () => {
+      const result = await ServiceMovies.get(payload);
+      expect(result.title).to.be.equal('Inglorious Basterds');
+    })
+  })
+  describe('inexistente', () => {
+    const payload = 2;
+    before(async () => {
+      const execute = [];
+      sinon.stub(ModelMovies, 'get').resolves(execute);
+    })
+    after(async () => {
+      ModelMovies.get.restore();
+    })
+    it('retorna um objeto', async () => {
+      const result = await ServiceMovies.get(payload)
+      expect(result).to.be.an('object');
+    })
+    it('o objeto contém informações de erro', async () => {
+      const result = await ServiceMovies.get(payload)
+      expect(result.error).to.be.an('object')
+    })
+    it('o erro tem o código "notFound"', async () => {
+      const result = await ServiceMovies.get(payload)
+      expect(result.error.code).to.be.equal('notFound');
+    })
+  })
+})

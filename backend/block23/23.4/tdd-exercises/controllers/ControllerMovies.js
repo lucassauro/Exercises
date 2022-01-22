@@ -17,6 +17,15 @@ const create = async (req, res) => {
     .send('Filme criado com sucesso!');
 };
 
+const get = async (req, res) => {
+  const { id } = req.params;
+  const result = await ServiceMovies.get(id);
+  if (result.error && result.error.code === 'notFound') return res.status(404).send(result.error.message);
+  if (result.error && result.error.code === 'badRequest') return res.status(404).send(result.error.message);
+  res.status(200).send(result);
+}
+
 module.exports = {
   create,
+  get,
 };
