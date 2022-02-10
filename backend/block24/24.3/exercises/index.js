@@ -26,13 +26,16 @@ app.post('/signup', async (req, res) => {
   const adminValue = Math.floor(Math.random() * 100)
   const admin = adminValue <= 50 ? false : true;
   const file = await ModelUser.readFiles();
+  const filtered = await file.filter((elem) => elem.username === username);
+  if (filtered) { 
+    return res.status(409).json({ message:  'user already exists'});
+  } 
   if (dataIsValid(username) && dataIsValid(password) && file) {
     await file.push({ username, admin, password });
     await ModelUser.writeFiles(file)
   }
   const token = jwt.sign({ username, admin }, process.env.SECRET, jwtConfig)
-  res.status(200).json({ token })
-
+  return res.status(200).json({ token })
 })
 
 app.get('/users/me', validateJWT);
