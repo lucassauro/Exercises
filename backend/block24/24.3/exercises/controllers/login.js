@@ -22,5 +22,5 @@ module.exports = validateLogin = async (req, res) => {
     return res.status(200).json({ token })
   }
 
-  res.status(400).json({ message: 'Ocorreu algum erro'})
+  return res.status(400).json({ message: 'Ocorreu algum erro'})
 }
